@@ -36,7 +36,8 @@
     "print-js": "^1.0.63",
     "socket.io": "^4.8.1",
     "sweetalert2": "^9.5.4",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "yarn": "^1.22.22"
   },
   "scripts": {
     "start": "electron .",
@@ -58,7 +59,7 @@
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
-    "electron": ">=13.6.6",
+    "electron": "^12.2.3",
     "electron-builder": "^25.1.8",
     "electron-is-dev": "^1.1.0",
     "nodemon": "^3.1.7"

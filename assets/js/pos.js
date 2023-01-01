@@ -1737,32 +1737,39 @@ if (auth == undefined) {
             console.log(formData);
 
             if (ownUserEdit) {
-                if (formData.password != atob(user.password)) {
+                console.log(user);
+                if (user && user.password && formData.password != atob(user.password)) {
                     if (formData.password != formData.pass) {
                         Swal.fire(
                             'Oops!',
                             'Passwords do not match!',
                             'warning'
                         );
+                        return;
                     }
                 }
             }
             else {
-                if (formData.password != atob(allUsers[user_index].password)) {
+                if (allUsers[user_index] && allUsers[user_index].password && formData.password != atob(allUsers[user_index].password)) {
                     if (formData.password != formData.pass) {
                         Swal.fire(
                             'Oops!',
                             'Passwords do not match!',
                             'warning'
                         );
+                        return; 
                     }
                 }
             }
 
 
 
-            if (formData.password == atob(user.password) || formData.password == atob(allUsers[user_index].password) || formData.password == formData.pass) {
-                $.ajax({
+            if (
+                (user && formData.password == atob(user.password)) || 
+                (allUsers[user_index] && formData.password == atob(allUsers[user_index].password)) || 
+                formData.password == formData.pass
+            ) {
+                    $.ajax({
                     url: api + 'users/post',
                     type: 'POST',
                     data: JSON.stringify(formData),
