@@ -488,7 +488,7 @@ if (auth == undefined) {
                                 $('<div>', { class: 'input-group-btn btn-xs' }).append(
                                     $('<button>', {
                                         class: 'btn btn-default btn-xs',
-                                        onclick: '$(this).qtIncrement(' + index + ')'
+                                        onclick: '$(this).qtIncrement(' + index + ')',
                                     }).append(
                                         $('<i>', { class: 'fa fa-plus' })
                                     )
@@ -525,6 +525,9 @@ if (auth == undefined) {
                 return selected._id == parseInt(item.id);
             });
 
+            item.quantity = parseInt(item.quantity, 10) || 0;
+
+
             if (product[0].stock == 1) {
                 if (item.quantity < product[0].quantity) {
                     item.quantity += 1;
@@ -558,7 +561,29 @@ if (auth == undefined) {
 
         $.fn.qtInput = function (i) {
             item = cart[i];
-            item.quantity = $(this).val();
+            let enteredQuantity = parseInt($(this).val(), 10); 
+            let product = allProducts.find(product => product._id === parseInt(item.id));
+            if (enteredQuantity > product.quantity) {
+                Swal.fire(
+                    'Out of Stock!',
+                    'The quantity you entered exceeds the available stock.',
+                    'error'
+                );
+
+                $(this).val(product.quantity);
+                item.quantity = product.quantity;
+            } else if (enteredQuantity < 1 || isNaN(enteredQuantity)) {
+              $(this).val(1);
+                item.quantity = 1;
+            }
+            else {
+                item.quantity = enteredQuantity;
+            }
+
+
+            if (isNaN(item.quantity) || item.quantity < 1) {
+               item.quantity = 1; 
+    }
             $(this).renderTable(cart);
         }
 
@@ -1159,6 +1184,7 @@ if (auth == undefined) {
             $(this).ajaxSubmit({
                 contentType: 'application/json',
                 success: function (response) {
+                    console.log(response);
 
                     $('#saveProduct').get(0).reset();
                     $('#current_img').text('');
@@ -1184,6 +1210,13 @@ if (auth == undefined) {
                 }
             });
 
+        });
+
+        $('#imagename').on('change', function () {
+            const [file] = this.files;
+            if (file) {
+                $('#current_img').html(`<img src="${URL.createObjectURL(file)}" alt="Preview" style="max-width: 100px;">`);
+            }
         });
 
 
@@ -1249,7 +1282,7 @@ if (auth == undefined) {
             if (allProducts[index].img != "") {
 
                 $('#imagename').hide();
-                $('#current_img').html(`<img src="${img_path + allProducts[index].img}" alt="">`);
+                $('#current_img').html(`<img src="${img_path}" alt="">`);
                 $('#rmv_img').show();
             }
 
@@ -1676,7 +1709,7 @@ if (auth == undefined) {
                 );
             }
             else {
-                if (isNumeric(formData.till)) {
+                if (!isNaN(formData.till)) {
                     formData['app'] = $('#app').find('option:selected').text();
                     storage.set('settings', formData);
                     ipcRenderer.send('app-reload', '');
@@ -2004,7 +2037,7 @@ function loadTransactions() {
                         result[item].forEach(i => {
                             id = i.id;
                             price = i.price;
-                            quantity += i.quantity;
+                            quantity += Number(i.quantity);
                         });
 
                         sold.push({

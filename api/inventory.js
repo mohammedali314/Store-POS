@@ -160,8 +160,8 @@ app.decrementInventory = function ( products ) {
                 callback();
             } else {
                 let updatedQuantity =
-                    parseInt( product.quantity) -
-                    parseInt( transactionProduct.quantity );
+                    parseInt(product.quantity) -
+                    parseInt(transactionProduct.quantity );
 
                 inventoryDB.update( {
                         _id: parseInt(product._id)
