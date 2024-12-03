@@ -3,13 +3,16 @@ const setupEvents = require('./installers/setupEvents')
     return;
  }
  
+ 
 const server = require('./server');
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path')
 
 const contextMenu = require('electron-context-menu');
 
-let mainWindow
+let mainWindow;
+app.disableHardwareAcceleration();
+
 
 function createWindow() {
   mainWindow = new BrowserWindow({

@@ -32,7 +32,8 @@ let dotInterval = setInterval(function () { $(".dot").text('.') }, 3000);
 let Store = require('electron-store');
 const remote = require('electron').remote;
 const app = remote.app;
-let img_path = app.getPath('appData') + '/POS/uploads/';
+let img_path = 'file:///Users/mohammedali/store/Store-POS/undefined/POS/uploads/';
+// let img_path = app.getPath('appData') + '/POS/uploads/';
 let api = 'http://' + host + ':' + port + '/api/';
 let btoa = require('btoa');
 let jsPDF = require('jspdf');
@@ -198,7 +199,7 @@ if (auth == undefined) {
         if (0 == user.perm_settings) { $(".p_five").hide() };
 
         function loadProducts() {
-
+            
             $.get(api + 'inventory/products', function (data) {
 
                 data.forEach(item => {
