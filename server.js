@@ -3,6 +3,7 @@ let express = require("express"),
   app = require("express")(),
   server = http.createServer(app),
   bodyParser = require("body-parser");
+  dotenv = require("dotenv").config();
 
 const PORT = process.env.PORT || 8001;
 
