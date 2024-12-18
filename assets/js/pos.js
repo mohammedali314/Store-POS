@@ -32,7 +32,9 @@ let dotInterval = setInterval(function () { $(".dot").text('.') }, 3000);
 let Store = require('electron-store');
 const remote = require('electron').remote;
 const app = remote.app;
-let img_path = process.env.IMAGE_PATH ? `${process.env.IMAGE_PATH}/POS/uploads/`:`'./uploads/'`;
+const os = require('os');
+const baseDir = path.join(os.homedir(), 'Desktop', 'Store-POS');
+let img_path = path.join(baseDir,'POS','uploads/');
 console.log(img_path);
 // let img_path = app.getPath('appData') + '/POS/uploads/';
 let api = 'http://' + host + ':' + port + '/api/';
@@ -2126,10 +2128,15 @@ function loadSoldProducts() {
 
         counter++;
 
+        let stockValue = 'N/A'; // Default value if product is not found
+    if (product.length > 0 && product[0].stock === 1) {
+        stockValue = product[0].quantity || '';  // If stock is 1, display quantity, else empty
+    }
+
         sold_list += `<tr>
             <td>${item.product}</td>
             <td>${item.qty}</td>
-            <td>${product[0].stock == 1 ? product.length > 0 ? product[0].quantity : '' : 'N/A'}</td>
+            <td>${stockValue}</td>
             <td>${settings.symbol + (item.qty * parseFloat(item.price)).toFixed(2)}</td>
             </tr>`;
 
@@ -2152,7 +2159,11 @@ function userFilter(users) {
             return usr._id == user;
         });
 
-        $('#users').append(`<option value="${user}">${u[0].fullname}</option>`);
+        if (u.length > 0) {
+            $('#users').append(`<option value="${user}">${u[0].fullname}</option>`);
+        } else {
+            console.error(`User with _id ${user} not found`);
+        }
     });
 
 }

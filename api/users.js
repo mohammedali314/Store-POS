@@ -4,14 +4,19 @@ const bodyParser = require( "body-parser" );
 const Datastore = require( "nedb" );
 const btoa = require('btoa');
 app.use( bodyParser.json() );
+const os = require('os');
+const path = require('path');
+
+const baseDir = path.join(os.homedir(), 'Desktop','Store-POS',);
 
 module.exports = app;
 
  
 let usersDB = new Datastore( {
-    filename: process.env.APPDATA+"/POS/server/databases/users.db",
+    filename: path.join(baseDir,'POS','server','databases','users.db'),
     autoload: true
 } );
+
 
 
 usersDB.ensureIndex({ fieldName: '_id', unique: true });

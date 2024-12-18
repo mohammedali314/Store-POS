@@ -6,15 +6,19 @@ const async = require( "async" );
 const fileUpload = require('express-fileupload');
 const multer = require("multer");
 const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
+const baseDir = path.join(os.homedir(), 'Desktop','Store-POS',);
+
+fs.mkdirSync(path.join(baseDir, 'POS', 'uploads'), { recursive: true });
 
 const storage = multer.diskStorage({
-    destination: process.env.APPDATA+'/POS/uploads',
+    destination: path.join(baseDir,'POS','uploads'),
     filename: function(req, file, callback){
         callback(null, Date.now() + '.jpg'); //
     }
 });
-
 
 let upload = multer({storage: storage});
 
@@ -25,10 +29,9 @@ module.exports = app;
 
  
 let inventoryDB = new Datastore( {
-    filename: process.env.APPDATA+"/POS/server/databases/inventory.db",
+    filename: path.join(baseDir, 'POS', 'server', 'databases', 'inventory.db'),
     autoload: true
 } );
-
 
 inventoryDB.ensureIndex({ fieldName: '_id', unique: true });
 
@@ -75,9 +78,10 @@ app.post( "/product", upload.single('imagename'), function ( req, res ) {
  
 
     if(req.body.remove == 1) {
-        const path = './resources/app/public/uploads/product_image/'+ req.body.img;
+        const imagePath = path.join(baseDir,'POS','uploads/',req.body.img);
+        console.log(imagePath);
         try {
-          fs.unlinkSync(path)
+          fs.unlinkSync(imagePath)
         } catch(err) {
           console.error(err)
         }

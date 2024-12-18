@@ -1,16 +1,30 @@
-const app = require( "express" )();
+    const app = require( "express" )();
 const server = require( "http" ).Server( app );
 const bodyParser = require( "body-parser" );
 const Datastore = require( "nedb" );
 const async = require( "async" );
+const os = require("os");
+const path = require("path");
+const fs = require("fs");
 
-app.use( bodyParser.json() );
+const basePath = path.join(os.homedir(), 'Desktop', 'Store-POS');
+const dbPath = path.join(basePath, 'POS', 'server', 'databases');
+
+if (!fs.existsSync(dbPath)) {
+    fs.mkdirSync(dbPath, { recursive: true });
+    console.log(`Created database directory: ${dbPath}`);
+} else {
+    console.log(`Database directory exists: ${dbPath}`);
+}
+
+
+app.use(bodyParser.json());
 
 module.exports = app;
 
  
 let customerDB = new Datastore( {
-    filename: process.env.APPDATA+"/POS/server/databases/customers.db",
+    filename: path.join(dbPath, 'customers.db'),
     autoload: true
 } );
 

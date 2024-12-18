@@ -3,15 +3,23 @@ const server = require( "http" ).Server( app );
 const bodyParser = require( "body-parser" );
 const Datastore = require( "nedb" );
 const async = require( "async" );
+const os = require("os");
+const path = require("path");
+const fs = require("fs");
 
+const Path = path.join(os.homedir(),'Desktop','Store-POS');
+
+// Ensure necessary directories exist
+const dbPath = path.join(Path, 'POS', 'server', 'databases');
+if (!fs.existsSync(dbPath)) {
+    fs.mkdirSync(dbPath, { recursive: true });
+}
 
 app.use( bodyParser.json() );
-
 module.exports = app;
 
- 
 let categoryDB = new Datastore( {
-    filename: process.env.APPDATA+"/POS/server/databases/categories.db",
+    filename: path.join(dbPath, 'categories.db'),
     autoload: true
 } );
 

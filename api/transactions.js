@@ -3,16 +3,19 @@ let server = require("http").Server(app);
 let bodyParser = require("body-parser");
 let Datastore = require("nedb");
 let Inventory = require("./inventory");
+const path = require('path');
+const os = require('os');
+ 
+const baseDir = path.join(os.homedir(), 'Desktop','Store-POS',);
 
 app.use(bodyParser.json());
 
 module.exports = app;
  
 let transactionsDB = new Datastore({
-  filename: process.env.APPDATA+"/POS/server/databases/transactions.db",
+  filename:path.join(baseDir,'POS','server','databases','transactions.db'),
   autoload: true
 });
-
 
 transactionsDB.ensureIndex({ fieldName: '_id', unique: true });
 
