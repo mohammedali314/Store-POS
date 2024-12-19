@@ -352,7 +352,8 @@ if (auth == undefined) {
                         $("#searchBarCode").get(0).reset();
                         $("#basic-addon2").empty();
                         $("#basic-addon2").append(
-                            $('<i>', { class: 'glyphicon glyphicon-ok' })
+                            $('<i>', {
+                                class: 'glyphicon glyphicon-ok'})
                         )
                     }
 
@@ -1286,7 +1287,7 @@ if (auth == undefined) {
             if (allProducts[index].img != "") {
 
                 $('#imagename').hide();
-                $('#current_img').html(`<img src="${img_path}" alt="">`);
+                $('#current_img').html(`<img src="${img_path + allProducts[index].img}" alt="">`);
                 $('#rmv_img').show();
             }
 

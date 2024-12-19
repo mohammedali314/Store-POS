@@ -1,2 +1,6 @@
 /node_modules
 undefined
+dist
+/POS
+/POS/*
+release-builds

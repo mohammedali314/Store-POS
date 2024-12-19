@@ -1,20 +1,33 @@
 {
-  "name": "POS",
+  "name": "pos",
   "version": "0.1.0",
   "description": "Store Point of Sale is a desktop application developed by Hosting Domain and available for free download at www.storepointofsale.com.",
   "author": "Hosting Domain",
   "private": true,
   "main": "start.js",
   "build": {
-    "appId": "01",
+  "asar": true,
+  "asarUnpack": [
+    "assets/**/*",
+    "node_modules/**/*"
+   ],
+      "appId": "01",
+    "productName":"POS",
     "directories": {
       "buildResources": "assets"
-    }
+    },
+    "files": [
+      "**/*",
+      "!**/*.test.js",
+      "node_modules/**/*",
+      "assets/**/*"
+    ]
   },
   "dependencies": {
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "btoa": "^1.2.1",
+    "dotenv": "^16.4.7",
     "electron-context-menu": "^0.15.1",
     "electron-store": "^5.1.0",
     "electron-winstaller": "^5.4.0",
@@ -40,6 +53,7 @@
     "yarn": "^1.22.22"
   },
   "scripts": {
+    "package-mac": "electron-packager . POS --platform=darwin --arch=x64 --overwrite --asar=false --out=release-builds --icon=assets/images/icon.icns",
     "start": "electron .",
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
     "electron-build": "electron-builder",
@@ -62,6 +76,7 @@
     "electron": "^12.2.3",
     "electron-builder": "^25.1.8",
     "electron-is-dev": "^1.1.0",
+    "electron-packager": "^17.1.2",
     "nodemon": "^3.1.7"
   }
 }

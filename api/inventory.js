@@ -70,6 +70,7 @@ app.post( "/product", upload.single('imagename'), function ( req, res ) {
 
     if(req.body.img != "") {
         image = req.body.img;        
+        console.log(image);
     }
 
     if(req.file) {
