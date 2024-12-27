@@ -72,7 +72,6 @@ app.post( "/post", upload.single('imagename'), function ( req, res ) {
         }
     } 
     
-  
     let Settings = {  
         _id: 1,
         settings: {
