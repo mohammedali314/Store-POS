@@ -32,7 +32,7 @@ app.all("/*", function(req, res, next) {
 });
 
 app.get("/", function(req, res) {
-  res.send("POS Server Online.");
+  res.send("POS Server Online");
 });
 
 app.use("/api/inventory", require("./api/inventory"));
