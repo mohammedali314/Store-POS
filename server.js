@@ -1,15 +1,20 @@
+const path = require("path");
+const os = require('os');
+
 let express = require("express"),
   http = require("http"),
   app = require("express")(),
   server = http.createServer(app),
   bodyParser = require("body-parser");
   dotenv = require("dotenv").config();
+  cors = require('cors')
 
 const PORT = process.env.PORT || 8001;
 
 console.log("Server started");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors())
 
 app.all("/*", function(req, res, next) {
  
@@ -36,5 +41,10 @@ app.use("/api/categories", require("./api/categories"));
 app.use("/api/settings", require("./api/settings"));
 app.use("/api/users", require("./api/users"));
 app.use("/api", require("./api/transactions"));
+
+const baseDir = path.join(os.homedir(), 'Desktop', 'Store-POS');
+const uploadsDir = path.join(baseDir, 'POS', 'uploads');
+app.use('/uploads', express.static(uploadsDir));
+
 
 server.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));

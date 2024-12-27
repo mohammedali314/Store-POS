@@ -16,7 +16,7 @@ fs.mkdirSync(path.join(baseDir, 'POS', 'uploads'), { recursive: true });
 const storage = multer.diskStorage({
     destination: path.join(baseDir,'POS','uploads'),
     filename: function(req, file, callback){
-        callback(null, Date.now() + '.jpg'); //
+        callback(null, Date.now() + path.extname(file.originalname)); //
     }
 });
 
@@ -32,6 +32,7 @@ let inventoryDB = new Datastore( {
     filename: path.join(baseDir, 'POS', 'server', 'databases', 'inventory.db'),
     autoload: true
 } );
+
 
 inventoryDB.ensureIndex({ fieldName: '_id', unique: true });
 
@@ -61,9 +62,6 @@ app.get( "/products", function ( req, res ) {
         res.send( docs );
     } );
 } );
-
-
- 
 app.post( "/product", upload.single('imagename'), function ( req, res ) {
 
     let image = '';
